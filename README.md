@@ -1,7 +1,7 @@
 # MachineLearningProject
-setting up an application which can determine someone's age thanks a picture
+setting up an application which can determine someone's age thanks to a picture
 
-Iles BENKOUSSA
+Ilès BENKOUSSA
 
 Arnauld BIAM
 
