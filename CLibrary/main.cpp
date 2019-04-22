@@ -79,7 +79,7 @@ extern "C"{
 		int inputCountPerSample
 	)
 	{
-	    double predict_coeff = 0;
+	    double predict_coeff = 0;                    //inference bloc
 	    for(int i = 0; i < inputCountPerSample; i ++){
             predict_coeff += W[i] * XToPredict[i];
 	    }
