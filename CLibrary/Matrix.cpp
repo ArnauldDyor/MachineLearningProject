@@ -1,0 +1,165 @@
+// ENSEMBLE DE FONCTIONS OPERANT SUR DES MATRICES
+#include "Matrix.h"
+
+extern "C"{
+
+    // SUPPRIME UNE COLONNE
+    SUPEREXPORT MatrixXd removeColumn(MatrixXd xMat, int rang){
+
+        MatrixXd newMat(xMat.rows(), xMat.cols() - 1);
+        int j = 0;
+
+        for(int i = 0; i < xMat.cols(); i ++){
+
+            if(i == rang)
+                continue;
+
+            newMat.col(j) << xMat.col(i);
+            j ++;
+        }
+
+        return newMat;
+
+    }
+
+
+    // RETOURNE L'INDEX D'UNE COLNNE COLINEAIRE
+   SUPEREXPORT  int findColinear(MatrixXd xMat){
+
+        double beta = 0;
+
+        if(xMat.cols() == 1)
+            return -1;
+
+        // on compare chaque colonne
+        for(int i = 0; i < xMat.cols(); i ++){
+
+            for(int j = i + 1; j < xMat.cols(); j ++){
+
+                beta = xMat(0, i) / xMat(0, j);
+                int k = 0;
+
+                while(k < xMat.rows()){
+
+                    // si combiaison différente
+                    if(xMat(k, i) / xMat(k, j) - beta > 0.0001 || xMat(k, i) / xMat(k, j) - beta < -0.0001){
+                        break;
+                    }
+
+                    k ++;
+
+                }
+
+                if(k == xMat.rows()){
+                    return j;
+                }
+            }
+
+
+        }
+
+        return -1;
+
+    }
+
+
+     // POUR CENTRER LA MATRICE
+     SUPEREXPORT double correctionMean(MatrixXd xMat, MatrixXd wMat){
+
+        double mean = 0;
+
+        for(int sampleCount = 0; sampleCount < xMat.rows(); sampleCount ++){
+
+            for(int inputCountPerSample = 0; inputCountPerSample < xMat.cols(); inputCountPerSample ++){
+                mean += (xMat(sampleCount, inputCountPerSample) * wMat(0, inputCountPerSample));
+            }
+        }
+
+        return mean / xMat.rows();
+    }
+
+
+
+    // TRANSFORME UN TABLEAU EN MATRICE
+	 SUPEREXPORT MatrixXd translateTrainingData(double* XTrain,  int sampleCount, int inputCountPerSample){
+
+        MatrixXd xMat(sampleCount, inputCountPerSample);
+        int cursor = 0;
+
+        for(int i = 0; i < sampleCount; i ++){
+
+            for(int j = 0; j < inputCountPerSample; j ++){
+                xMat.row(i).col(j) << XTrain[cursor];
+                cursor += 1;
+            }
+
+        }
+
+        return xMat;
+
+	}
+
+
+	// AJOUTE BIAIS
+	 SUPEREXPORT MatrixXd addBias(MatrixXd xMat){
+
+        xMat.conservativeResize(xMat.rows(), xMat.cols() + 1);
+
+        for(int i = 0; i < xMat.rows(); i ++){
+            xMat.row(i).col(xMat.cols() - 1) << 1;
+        }
+
+        return xMat;
+	}
+
+
+    //SUPPRIME LES LIGNES D'UNE MATRICE DEMANDEES
+     MatrixXd removeLines(MatrixXd xMat, int listIndex[], int nbIndex){
+
+        MatrixXd newMat(xMat.rows() - nbIndex, xMat.cols());
+        int rows = 0;
+        int present;
+
+        for(int i = 0; i < xMat.rows(); i ++){
+
+            present = 0;
+            for(int j = 0; j < nbIndex; j ++){
+
+                if(i == listIndex[j]){
+                    present = 1;
+                    break;
+                }
+            }
+
+            if(present == 0){
+                newMat.row(rows) << xMat.row(i);
+                rows += 1;
+            }
+        }
+
+        return newMat;
+    }
+
+
+     //FUSIONNE DEUX COLONNES -> UNE COLNNE ENTRE -1 ET 1, POUR CLASSIFICATION
+    SUPEREXPORT MatrixXd harmonoizeResult(MatrixXd yMat){
+
+        MatrixXd newMat(yMat.rows(), yMat.cols());
+
+         for(int i = 0; i < yMat.rows(); i ++){
+
+            for(int j = 0; j < yMat.cols(); j += 1){
+                if(yMat(i, j) == 0){
+                    newMat(i, j) = -1.0;
+                }
+                else{
+                    newMat(i, j) = yMat(i, j);
+                }
+            }
+
+         }
+
+        return newMat;
+    }
+}
+
