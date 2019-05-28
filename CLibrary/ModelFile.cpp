@@ -130,7 +130,6 @@ extern "C"{
      SUPEREXPORT void writeTrainModel(MatrixXd wMat, double average){
 
             ofstream fichier("Model.txt", ios::out | ios::app);
-            string line;
 
             if(fichier){
 
@@ -148,10 +147,9 @@ extern "C"{
                     cerr << "<<<<<  Erreur lors de la création du fichier Model  <<<<<" << endl;
             }
 
-            return;
-
 
     }
+
 
      // evalue les scores des differents test dans une classification > 2 colonnes
      SUPEREXPORT double getClasse(double result[], int inputCountPerResult){
@@ -192,6 +190,8 @@ extern "C"{
 
 
 }
+
+
 
 
 

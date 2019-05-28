@@ -1,0 +1,13 @@
+
+***** BIBLIOTHEQUE C++ POUR LA REGRESSION ET CLASSIFICATION *****
+
+*** Les fichiers Perceprton, Couche et Neuronne ne sont pas à compiler étant donné que le perceptron n'est pas opérationnelle ***
+
+1) Créer un .so ou .dll regorupant les fichers main, Matrix, ModelFile
+
+2) Modeifiez le PATH du fichier CLibrary.py en insérant le chemin du .so / .dll
+
+3) Importer le fichier CLibrary.py pour utiliser la librairie
+
+
+*** Tous les problèmes et améliorations à venir sont disponible dans le rapport ***

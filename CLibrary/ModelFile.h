@@ -23,3 +23,4 @@ extern "C"{
     SUPEREXPORT double getClasse(double result[], int inputCountPerResult);
 
 }
+

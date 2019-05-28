@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <vector>
 #include "Eigen/Dense"
 
 using namespace Eigen;
@@ -28,6 +29,8 @@ extern "C"{
      SUPEREXPORT MatrixXd addBias(MatrixXd xMat);
 
 }
+
+
 
 
 

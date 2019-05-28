@@ -13,7 +13,7 @@
 
 #include "Matrix.h"
 #include "ModelFile.h"
-
+#include "Perceptron.h"
 
 using namespace Eigen;
 using namespace std;
@@ -30,3 +30,4 @@ extern "C" {
     SUPEREXPORT void multiRosenblatt(double* W, double* XTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double* YTrain, double alpha, int epochs);
 
 }
+
