@@ -1,7 +1,7 @@
 
 ***** BIBLIOTHEQUE C++ POUR LA REGRESSION ET CLASSIFICATION *****
 
-*** Les fichiers Perceprton, Couche et Neuronne ne sont pas à compiler étant donné que le perceptron n'est pas opérationnelle ***
+*** Les fichiers Perceprton, Couche et Neuronne ne sont pas à compiler étant donné que le perceptron n'est pas opérationnel ***
 
 1) Créer un .so ou .dll regorupant les fichers main, Matrix, ModelFile
 
