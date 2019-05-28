@@ -1,7 +1,7 @@
 from ctypes import *
 import numpy as np
 
-myDll = CDLL("/home/victor/Programmation/C/Shared/main.so")
+myDll = CDLL("/home/dyor/Documents/C/PJ/main.so")
 
 
 def create_linear_model(sampleCount):
