@@ -75,21 +75,15 @@ extern "C"{
 	    MatrixXd xMat = translateTrainingData(XTrain, sampleCount, inputCountPerSample);
 	    MatrixXd yMat = translateTrainingData(YTrain, sampleCount, 1);
 
-        // supression colonne colineaire
-        int colin = findColinear(xMat);
-
-        if(colin != -1){
-
-            xMat = removeColumn(xMat, colin);
-            colin = findColinear(xMat);
-            configureModelFile(0, inputCountPerSample, 82);
-            fit_regression(create_linear_model(xMat.cols()), xMat.array().data(), sampleCount, xMat.cols(), YTrain);
-
-        }
-
         xMat = addBias(xMat);
         MatrixXd expr = xMat.transpose() * xMat;
-        expr = expr.inverse();
+
+        if(expr.determinant() == 0){
+            expr = expr.completeOrthogonalDecomposition().pseudoInverse();
+        }
+        else{
+            expr = expr.inverse();
+        }
 
         MatrixXd wMat = (expr * xMat.transpose()) * yMat;
 

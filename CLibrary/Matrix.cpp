@@ -23,46 +23,6 @@ extern "C"{
     }
 
 
-    // RETOURNE L'INDEX D'UNE COLNNE COLINEAIRE
-   SUPEREXPORT  int findColinear(MatrixXd xMat){
-
-        double beta = 0;
-
-        if(xMat.cols() == 1)
-            return -1;
-
-        // on compare chaque colonne
-        for(int i = 0; i < xMat.cols(); i ++){
-
-            for(int j = i + 1; j < xMat.cols(); j ++){
-
-                beta = xMat(0, i) / xMat(0, j);
-                int k = 0;
-
-                while(k < xMat.rows()){
-
-                    // si combiaison différente
-                    if(xMat(k, i) / xMat(k, j) - beta > 0.0001 || xMat(k, i) / xMat(k, j) - beta < -0.0001){
-                        break;
-                    }
-
-                    k ++;
-
-                }
-
-                if(k == xMat.rows()){
-                    return j;
-                }
-            }
-
-
-        }
-
-        return -1;
-
-    }
-
-
      // POUR CENTRER LA MATRICE
      SUPEREXPORT double correctionMean(MatrixXd xMat, MatrixXd wMat){
 
