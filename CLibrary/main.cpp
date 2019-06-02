@@ -10,7 +10,6 @@ extern "C"{
 
         double* W = new double[inputCountPerSample + 1];
         const int POINT = 100;
-        std::srand(std::time(0));
 
         for (int i = 0; i < inputCountPerSample + 1; i++) {
 
@@ -58,13 +57,13 @@ extern "C"{
             {
                 for (int k = 0; k < sampleCount; k++)
                 {
-                   wMat += alpha * (yMat(k, 0) - predict_classification(wMat.array().data(), ((xMat.row(k)).array()).data(), inputCountPerSample)) * xMat.row(k);
+                   wMat += alpha * (yMat(k, 0) - predict_classification(translateMatriceData(wMat), translateMatriceData(xMat.row(k)), inputCountPerSample)) * xMat.row(k);
                 }
 
                cout << ">>>>> Rosenblatt classification : Weight after " << i + 1 << " epochs  :"  << wMat << " <<<<<" << endl;
             }
 
-            writeTrainModel(wMat, correctionMean(xMat, wMat));
+            writeTrainModel(wMat);
 
 
         }
@@ -87,7 +86,7 @@ extern "C"{
 
         MatrixXd wMat = (expr * xMat.transpose()) * yMat;
 
-        writeTrainModel(wMat.transpose(), 0);
+        writeTrainModel(wMat.transpose());
 
 	}
 
@@ -120,33 +119,6 @@ extern "C"{
 		delete[] W;
 	}
 
-	SUPEREXPORT double useTrainModel(double* X){
-
-
-        ifstream fichier("Model.txt", ios ::in);
-        string line;
-        string modele = "N";
-        double result = -5;
-
-        if(fichier){
-
-            if(getline(fichier, line)){
-                modele = line.c_str();
-            }
-
-            if(modele == "C"){
-                result = useRosenblatt(X);
-            }
-            else if(modele == "R"){
-                result = useRegLinear(X);
-            }
-
-            fichier.close();
-        }
-
-        return result;
-	}
-
 	// FONCTIONS INTERNES //
 
 
@@ -162,43 +134,10 @@ extern "C"{
             int epochs
         )
         {
-            MatrixXd sousTest(sampleCount, 2);
-            MatrixXd yMat = translateTrainingData(YTrain, sampleCount, inputCountPerResult);
-            MatrixXd tempXMat;
-            MatrixXd  tempYMat;
-            double temp;
-            int noAnalyse[sampleCount];
-            int countNoAnalyse = 0;
 
-            // si la les resultats sont sur deux colonnes -> on binarise
-            if(inputCountPerResult == 2){
-                for(int i = 0; i < yMat.rows(); i ++){
-
-                    temp = yMat(i, 0) * yMat(i, 0) - yMat(i, 1) * yMat(i, 1);
-                    //si temp = 0 alors la categorie n'est pas analyse lors de ce test
-                    if(temp == 0){
-                        noAnalyse[countNoAnalyse] = i;
-                        countNoAnalyse += 1;
-                    }
-                }
-
-                //on retire les lignes non analysées
-                tempXMat = removeLines(translateTrainingData(XTrain, sampleCount, inputCountPerSample) , noAnalyse, countNoAnalyse);
-                tempYMat = removeLines(translateTrainingData(YTrain, sampleCount, 1) , noAnalyse, countNoAnalyse);
-                //on lance le testCase
-                fit_classification_rosenblatt_rule(W, tempXMat.array().data() , tempXMat.rows(), inputCountPerSample, 1, tempYMat.array().data(), alpha, epochs);
-                return;
-            }
-
-            // si plus de deux classes
+            MatrixXd Y = translateTrainingData(YTrain, sampleCount, inputCountPerResult);
             for(int i = 0; i < inputCountPerResult; i ++){
-
-                sousTest.col(0) << yMat.col(i);
-                for(int j = i + 1; j < inputCountPerResult; j ++){
-
-                    sousTest.col(1) << yMat.col(j);
-                    fit_classification_rosenblatt_rule(W, XTrain, sampleCount, inputCountPerSample, 2, sousTest.array().data(), alpha, epochs);
-                }
+                fit_classification_rosenblatt_rule(W, XTrain, sampleCount, inputCountPerSample, 1, translateMatriceData(Y.col(i)), alpha, epochs);
             }
 
         }

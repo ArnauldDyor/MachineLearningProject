@@ -24,9 +24,9 @@ extern "C"{
      SUPEREXPORT MatrixXd removeColumn(MatrixXd xMat, int rang);
      SUPEREXPORT MatrixXd removeLines(MatrixXd xMat, int listIndex[], int nbIndex);
      SUPEREXPORT MatrixXd harmonoizeResult(MatrixXd yMat);
-     SUPEREXPORT double correctionMean(MatrixXd xMat, MatrixXd wMat);
      SUPEREXPORT MatrixXd translateTrainingData(double* XTrain,  int sampleCount, int inputCountPerSample);
      SUPEREXPORT MatrixXd addBias(MatrixXd xMat);
+     SUPEREXPORT double* translateMatriceData(MatrixXd XTrain);
 
 }
 

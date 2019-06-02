@@ -26,7 +26,6 @@ extern "C" {
     SUPEREXPORT double predict_regression(double* W, double* XToPredict, int inputCountPerSample);
     SUPEREXPORT double predict_classification(double* W, double* XToPredict, int inputCountPerSample);
     SUPEREXPORT void delete_linear_model(double* W);
-    SUPEREXPORT double useTrainModel(double* X);
     SUPEREXPORT void multiRosenblatt(double* W, double* XTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double* YTrain, double alpha, int epochs);
 
 }
