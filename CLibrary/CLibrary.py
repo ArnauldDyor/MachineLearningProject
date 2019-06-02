@@ -173,7 +173,7 @@ def useRosenblatt(X):
     elif(len(positifs) > 0):
         return  positifs[randint(0, len(positifs) -1)]
     else:
-        return results[randint(0, len(results) -1)]
+        return randint(0, len(results) -1)
 
 #utilise un modele de regression lineaire
 def useRegLinear(X):
