@@ -1,9 +1,11 @@
 from ctypes import *
 import numpy as np
+import os
 from random import randint
 
 #A MODOFIER
 myDll = CDLL("/home/victor/Programmation/C/Shared/main.so")
+PROJECT_PATH = "/home/victor/Programmation/python/FlagAnalyse/"
 
 
 def create_linear_model(sampleCount):
@@ -78,6 +80,9 @@ def delete_linear_model(W):
 
 
 def configureModelFile(parametre, modele):
+
+    os.chdir(PROJECT_PATH)
+
     myDll.configureModelFile.argtype = [c_int32, c_char]
 
     myDll.configureModelFile.restype = c_void_p
@@ -106,7 +111,6 @@ def toArray(X, sampleCount, inputCountPerSample):
 def useRosenblatt(X):
 
     X = toArray(X, 1, np.size(X))
-
     #on ajoute biais
     X.append(1)
 
@@ -211,6 +215,9 @@ def useRegLinear(X):
 
 #utilse un modele
 def useTrainModel(X):
+
+    os.chdir(PROJECT_PATH)
+
     # ouverture du fichier
     try:
         file = open("Model.txt", "r")
