@@ -7,7 +7,7 @@ I) Créer la librairie partagée
 
 - Linux -> Editer MakeMLibrary, changer le path de destination
 
-II) CLibrary : myDll -> Modeifiez le PATH du fichier CLibrary.py en insérant le chemin modififé précédemment (celui du MakeMLibrary)
+II) CLibrary : myDll -> Modifier le PATH du fichier CLibrary.py en insérant le chemin modififé précédemment (celui du MakeMLibrary)
                PROJECT_PATH -> chemin de votre actuel projet
                
 III) Importer le fichier CLibrary.py pour utiliser la librairie
