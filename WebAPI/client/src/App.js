@@ -75,7 +75,7 @@ class App extends Component {
             loop = 0;
             return;
           }
-          else if(response.status !== 200){
+          else if (response.status !== 200) {
             window.myComponent.changeFlag('unknownFlag');
             clearInterval(intervalTimer);
             loop = 0;
@@ -93,6 +93,14 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Annual project machine learning</h2>
           <h2>Flag recognition</h2>
+        </div>
+        <div className="select-algo">
+          <label for="algorithm-select">Choose machine learning algorithm :</label>
+          <select id="algorithm-select">
+            <option value="Rosenblatt">Rosenblatt</option>
+            <option value="Multilayer">Multilayer perceptron</option>
+            <option value="hamster">Hamster</option>
+          </select>
         </div>
         <div className="dz-container">
           <UploadPic />

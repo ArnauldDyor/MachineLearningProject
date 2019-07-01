@@ -3,6 +3,7 @@ const Hapi = require('hapi');
 const Inert = require('inert');
 const fs = require('fs');
 const sharp = require('sharp');
+const spawn = require("child_process").spawn;
 
 const server = new Hapi.Server({
     port: 3000,
@@ -15,14 +16,35 @@ const server = new Hapi.Server({
 
 const provision = async () => {
 
-    await server.register(Inert);
-    let indix = 0;
-    function sleep(ms){
-        return new Promise(resolve=>{
-            setTimeout(resolve,ms)
+    function execPromise() {
+        return new Promise((resolve, reject) => {
+            
+            const pythonProcess = spawn('python3',["../CLibrary/CLibrary.py"]);
+
+            pythonProcess.stdout.on('data', (data) => {
+                //console.log(data.toString());
+                resolve(data.toString());
+            });
+        
+            pythonProcess.stderr.on('data', (data) => {
+                //console.log(`error:${data}`);
+            });
+
+            pythonProcess.stderr.on('close', (code) => {
+                //console.log('END');
+                //resolve();
+            });
         })
     }
-     
+
+    await server.register(Inert);
+
+    function sleep(ms) {
+        return new Promise(resolve => {
+            setTimeout(resolve, ms)
+        })
+    }
+
     server.route({
         method: 'GET',
         path: '/app/{path*}',
@@ -58,17 +80,16 @@ const provision = async () => {
                 if (data.file) {
                     let name = data.file.hapi.filename;
                     console.log('\tFilename : ' + name + '\n');
-                    let path = __dirname + "/upload/" + indix + '_' + name;
-                    indix++;
+                    let path = __dirname + "/upload/img";
                     let file = fs.createWriteStream(path);
-                    
+
                     const transformer = sharp()
-                    .resize(100, 100)
-                    .on('info', function(info){
-                        console.log(info);
-                        console.log("\n");
-                        console.log("Image saved and transformed");
-                    });
+                        .resize(100, 100)
+                        .on('info', function (info) {
+                            console.log(info);
+                            console.log("\n");
+                            console.log("Image saved and transformed");
+                        });
 
                     file.on('error', function (err) {
                         console.error(err)
@@ -77,7 +98,8 @@ const provision = async () => {
 
                     data.file.pipe(transformer).pipe(file);
                 }
-                await sleep(3000);
+
+                await execPromise();
 
                 if (Math.round(Math.random())) {
                     return h.response('frFlag').code(200);

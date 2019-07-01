@@ -1,11 +1,14 @@
 from ctypes import *
 import numpy as np
 import os
+import sys
 from random import randint
+import time
+import cv2
 
 # A MODOFIER
-myDll = CDLL("/home/victor/Programmation/C/Shared/main.so")
-PROJECT_PATH = "/home/victor/Programmation/python/PJ/"
+myDll = CDLL("../Shared/main.so")
+PROJECT_PATH = "../."
 
 
 def create_linear_model(sampleCount):
@@ -345,4 +348,23 @@ def mlp_classif_get_classe(results):
     else:
         return classe[randint(0, len(classe) - 1)]
 
+def image_to_array(image):
 
+    list_pixel = []
+    for i in range(0, np.size(image, axis= 0)):
+        for j in range(0, np.size(image, axis=1)):
+            for rgb in image[i, j]:
+                list_pixel.append(rgb)
+
+    return list_pixel
+
+def main():
+  print("Hello world !")
+  time.sleep( 1 )
+  data = cv2.imread("../WebAPI/upload/img")
+  image = image_to_array(data)
+  print(data)
+  print(useTrainModel(np.array(image)))
+  #../WebAPI/upload
+  sys.stdout.flush()
+main()
