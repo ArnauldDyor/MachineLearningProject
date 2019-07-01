@@ -32,7 +32,8 @@ def create_train_mat(list_path):
         os.chdir(rep)
         list_image = os.listdir('.')
         i = 0
-        while i < 300:
+        # nombre de photos analyser par répertoire
+        while i < 5:
             try:
                 image = cv2.imread(list_image[i])
                 image = cv2.resize(image, (100, 100))
@@ -56,10 +57,26 @@ def train_model(XTrain, YTrain, inputCountPerResult):
     clib.fit_classification_rosenblatt_rule(W, XTrain, sampleCount, inputCountPerSample, inputCountPerResult, YTrain,
                                             0.01, 100)
 
+def train_mlp(XTrain, YTrain, inputCountPerResult):
 
-def use_model(image):
+    sampleCount = int(len(YTrain) / inputCountPerResult)
+    inputCountPerSample = int(len(XTrain) / sampleCount)
 
-    res = clib.useTrainModel(np.array(image_to_array(image)))
+    clib.perceptron_multicouche('C', XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult, [], 1, 0.1)
+
+def use_mlp(image):
+
+    res = clib.useMLP(np.array(image_to_array(image)))
+    if(res < 0):
+        print("C'est la France !")
+    else:
+        print("C'est les USA !")
+
+
+
+def use_model(image, XTrain):
+
+    res = clib.useTrainModel(np.array(image_to_array(image) / max(XTrain)))
     if(res < 0):
         print("C'est la France !")
     else:
