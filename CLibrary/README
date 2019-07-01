@@ -1,13 +1,13 @@
 
-***** BIBLIOTHEQUE C++ POUR LA REGRESSION ET CLASSIFICATION *****
+***** BIBLIOTHEQUE C++ POUR LA REGRESSION LINEAIRE, CLASSIFICATION DE ROSENBLATT ET PERCEPTRON MULTICOUCHE *****
 
-*** Les fichiers Perceprton, Couche et Neuronne ne sont pas à compiler étant donné que le perceptron n'est pas opérationnel ***
+I) Créer la librairie partagée
 
-1) Créer un .so ou .dll regorupant les fichers main, Matrix, ModelFile
+- Windows -> à compléter (avec codeblocks ou CLion ça doit pas être sorcier
 
-2) Modeifiez le PATH du fichier CLibrary.py en insérant le chemin du .so / .dll
+- Linux -> Editer MakeMLibrary, changer le path de destination
 
-3) Importer le fichier CLibrary.py pour utiliser la librairie
-
-
-*** Tous les problèmes et améliorations à venir sont disponible dans le rapport ***
+II) CLibrary : myDll -> Modeifiez le PATH du fichier CLibrary.py en insérant le chemin modififé précédemment (celui du MakeMLibrary)
+               PROJECT_PATH -> chemin de votre actuel projet
+               
+III) Importer le fichier CLibrary.py pour utiliser la librairie
