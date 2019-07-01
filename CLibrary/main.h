@@ -10,13 +10,13 @@
 #include <fstream>
 #include <ctime>
 #include "Eigen/Dense"
-
 #include "Matrix.h"
 #include "ModelFile.h"
-#include "Perceptron.h"
+#include "Sequential.h"
 
 using namespace Eigen;
 using namespace std;
+using namespace seq;
 
 extern "C" {
 
@@ -27,6 +27,8 @@ extern "C" {
     SUPEREXPORT double predict_classification(double* W, double* XToPredict, int inputCountPerSample);
     SUPEREXPORT void delete_linear_model(double* W);
     SUPEREXPORT void multiRosenblatt(double* W, double* XTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double* YTrain, double alpha, int epochs);
+    SUPEREXPORT void perceptron_multicouche(char type, double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, int* nbNeuronnePerCouche, int nbCouche, int epochs, double alpha);
 
 }
+
 

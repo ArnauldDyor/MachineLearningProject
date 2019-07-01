@@ -23,29 +23,12 @@ extern "C"{
     }
 
 
-     // POUR CENTRER LA MATRICE
-     SUPEREXPORT double correctionMean(MatrixXd xMat, MatrixXd wMat){
-
-        double mean = 0;
-
-        for(int sampleCount = 0; sampleCount < xMat.rows(); sampleCount ++){
-
-            for(int inputCountPerSample = 0; inputCountPerSample < xMat.cols(); inputCountPerSample ++){
-                mean += (xMat(sampleCount, inputCountPerSample) * wMat(0, inputCountPerSample));
-            }
-        }
-
-        return mean / xMat.rows();
-    }
-
-
 
     // TRANSFORME UN TABLEAU EN MATRICE
 	 SUPEREXPORT MatrixXd translateTrainingData(double* XTrain,  int sampleCount, int inputCountPerSample){
 
         MatrixXd xMat(sampleCount, inputCountPerSample);
         int cursor = 0;
-
         for(int i = 0; i < sampleCount; i ++){
 
             for(int j = 0; j < inputCountPerSample; j ++){
@@ -59,12 +42,29 @@ extern "C"{
 
 	}
 
+	// TRANSFORME UNE MATRICE EN TABLEAU
+	SUPEREXPORT double* translateMatriceData(MatrixXd XTrain){
+
+        double* X = new double[XTrain.cols() * XTrain.rows()];
+        int cursor = 0;
+
+        for(int i = 0; i < XTrain.rows(); i++){
+
+            for(int j = 0; j < XTrain.cols(); j++){
+
+                X[cursor] = XTrain(i, j);
+                cursor += 1;
+            }
+        }
+
+        return X;
+	}
+
 
 	// AJOUTE BIAIS
 	 SUPEREXPORT MatrixXd addBias(MatrixXd xMat){
 
         xMat.conservativeResize(xMat.rows(), xMat.cols() + 1);
-
         for(int i = 0; i < xMat.rows(); i ++){
             xMat.row(i).col(xMat.cols() - 1) << 1;
         }
@@ -104,7 +104,7 @@ extern "C"{
      //FUSIONNE DEUX COLONNES -> UNE COLNNE ENTRE -1 ET 1, POUR CLASSIFICATION
     SUPEREXPORT MatrixXd harmonoizeResult(MatrixXd yMat){
 
-        MatrixXd newMat(yMat.rows(), yMat.cols());
+        MatrixXd newMat(yMat.rows(), 1);
 
          for(int i = 0; i < yMat.rows(); i ++){
 
@@ -123,5 +123,8 @@ extern "C"{
     }
 
 
+
+
 }
+
 

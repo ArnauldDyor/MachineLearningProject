@@ -1,0 +1,49 @@
+#!/bin/bash
+
+name_so="main.so"
+
+# destination à changer
+destination="/home/victor/Programmation/C/Shared/"
+
+echo "*** Compilation et partage MLLibrairy ***"
+
+echo "COMPLILATION ...................."
+
+echo "Compilation de main.cpp : "
+g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 main.cpp -o main.o
+
+echo "COMPILATION ===>................"
+
+echo "Compilation de ModelFle.cpp : "
+g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 ModelFile.cpp -o ModelFile.o
+
+echo "COMPLILATION ======>............."
+
+echo "Compilation de Matrix.cpp : "
+g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 Matrix.cpp -o Matrix.o
+
+echo "COMPLILATION =========>.........."
+
+echo "Compilation de Neuronne.cpp : "
+g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 Neuronne.cpp -o Neuronne.o
+
+echo "COMPLILATION ============>......."
+
+echo "Compilation de Couche.cpp : "
+g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 Couche.cpp -o Couche.o
+
+echo "COMPLILATION ===============>...."
+
+echo "Compilation de Sequential.cpp : "
+g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 Sequential.cpp -o Sequential.o
+
+echo "COMPLILATION ===================>"
+
+echo "Partge en $name_so : "
+g++ -shared -fPIC main.o ModelFile.o Matrix.o Neuronne.o Couche.o Sequential.o -o $name_so
+echo "OK"
+
+echo "Transfert dans $destination"
+mv $name_so $destination
+echo "OK"
+

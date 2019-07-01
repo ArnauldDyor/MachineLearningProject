@@ -57,14 +57,19 @@ extern "C"{
             {
                 for (int k = 0; k < sampleCount; k++)
                 {
-                   wMat += alpha * (yMat(k, 0) - predict_classification(translateMatriceData(wMat), translateMatriceData(xMat.row(k)), inputCountPerSample)) * xMat.row(k);
+                   double* weight = translateMatriceData(wMat);
+                   double* sample = translateMatriceData(xMat.row(k));
+
+                   wMat += alpha * (yMat(k, 0) - predict_classification(weight, sample, inputCountPerSample))  * xMat.row(k);
+
+                   delete_linear_model(weight);
+                   delete_linear_model(sample);
                 }
 
-               cout << ">>>>> Rosenblatt classification : Weight after " << i + 1 << " epochs  :"  << wMat << " <<<<<" << endl;
+               cout << ">>>>> Rosenblatt classification : Weight after " << i + 1  << " epochs  :"  << wMat << " <<<<<" << endl;
             }
 
             writeTrainModel(wMat);
-
 
         }
 
@@ -114,11 +119,34 @@ extern "C"{
 		return predict_regression(W, XToPredict, inputCountPerSample) >= 0 ? 1.0 : -1.0;
 	}
 
-	SUPEREXPORT void delete_linear_model(double* W)
+
+	SUPEREXPORT void perceptron_multicouche(char type,
+                                            double* XTrain,
+                                            double* YTrain,
+                                            int sampleCount,
+                                            int inputCountPerSample,
+                                            int inputCountPerResult,
+                                            int* nbNeuronnePerCouche,
+                                            int nbCouche,
+                                            int epochs,
+                                            double alpha
+       )
+       {
+
+        seq::Sequential sequential(type);
+        for(int i = 0; i < nbCouche; i += 1){
+
+            sequential.addCouche(nbNeuronnePerCouche[i]);
+        }
+
+        sequential.compile(XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult);
+        sequential.fit(epochs, alpha, sampleCount);
+    }
+
+    SUPEREXPORT void delete_linear_model(double* W)
 	{
 		delete[] W;
 	}
-
 	// FONCTIONS INTERNES //
 
 
@@ -139,6 +167,7 @@ extern "C"{
             for(int i = 0; i < inputCountPerResult; i ++){
                 fit_classification_rosenblatt_rule(W, XTrain, sampleCount, inputCountPerSample, 1, translateMatriceData(Y.col(i)), alpha, epochs);
             }
+
 
         }
 

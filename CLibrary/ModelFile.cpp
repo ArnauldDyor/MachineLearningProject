@@ -6,7 +6,7 @@
 extern "C"{
 
 
-      // CONFIGURE MODEL FILE
+      // CONFIGURE Model.txt (pour classif et regresion)
      SUPEREXPORT void configureModelFile(int parametre, int modele){
 
       ofstream fichier("Model.txt", ios::out | ios::trunc);
@@ -16,6 +16,26 @@ extern "C"{
             fichier << asci << endl << parametre << endl;
             fichier.close();
         }
+    }
+
+    // CONFIGURE Model.txt (pour mlp)
+    SUPEREXPORT void configureModelFileMlp(int nbNeuronneFirstCouche, int* neuronnePerCouche, int nbCouche, int nbNeuronneLastCouche, char type){
+
+        ofstream fichier("Model.txt", ios::out | ios::trunc);
+
+        if(fichier){
+
+            fichier << type << endl;
+            fichier << nbNeuronneFirstCouche + 1 << endl;
+
+            for(int i = 0; i < nbCouche; i += 1){
+                fichier << neuronnePerCouche[i] << endl;
+            }
+            fichier << nbNeuronneLastCouche << endl << "|" << endl;
+            fichier.close();
+
+        }
+
     }
 
     // ECRIT LE MODELE DANS UN FICHIER
@@ -29,10 +49,11 @@ extern "C"{
                     fichier << wMat(0, i) << endl;
                 }
 
+                cout << "Ecriture du modèle réussit" << endl;
                 fichier.close();
             }
             else {
-                    cerr << "<<<<<  Erreur lors de la création du fichier Model  <<<<<" << endl;
+                    cout << "<<<<<  Erreur lors de la création du fichier Model  <<<<<" << endl;
             }
 
 
@@ -40,6 +61,7 @@ extern "C"{
 
 
 }
+
 
 
 

@@ -19,5 +19,7 @@ extern "C"{
 
     SUPEREXPORT void writeTrainModel(MatrixXd wMat);
     SUPEREXPORT void configureModelFile(int parametre, int modele);
+    SUPEREXPORT void configureModelFileMlp(int nbNeuronneFirstCouche, int* neuronnePerCouche, int nbCouche, int nbNeuronneLastCouche, char type);
 }
+
 
