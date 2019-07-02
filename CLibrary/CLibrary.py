@@ -86,8 +86,7 @@ def configureModelFile(parametre, modele):
     myDll.configureModelFile(parametre, modele)
 
 def configureModelFileMlp(nbNeuronneFirstCouche, neuronnePerCouche, nbCouche, nbNeuronneLastCouche, type):
-    os.chdir(PROJECT_PATH)
-    
+
     nbNeurPointer = (c_int32 * len(neuronnePerCouche))(*neuronnePerCouche)
 
     myDll.configureModelFileMlp.argtype = [c_int32, POINTER(ARRAY(c_int32, len(neuronnePerCouche))), c_int32, c_int32, c_char]
@@ -172,16 +171,18 @@ def useRosenblatt(X):
 
         if cursor == inputCountPerSample:
 
-            if result < 0:
-                result = -1
-            else:
-                result = 1
+            #if result < 0:
+               # result = -1
+            #else:
+             #   result = 1
 
             results.append(result)
             result = 0
             cursor = 0
 
         i += 1
+
+    return np.argmax(np.array(results))
 
     # on renvoie la reponse
 
@@ -325,8 +326,6 @@ def useMLP(X):
 # retourne classe pour classif mlp à plusiseurs classes
 def mlp_classif_get_classe(results):
 
-    classe = []
-
     #si binaire
     if len(results) == 1:
         if results[0] < 0:
@@ -334,15 +333,8 @@ def mlp_classif_get_classe(results):
         else:
             return 1
 
-    for index in range(0, len(results)):
-        if results[index] > 0:
-            classe.append(index)
+    # si plusieurs classes
 
-    if len(classe) == 1:
-        return classe[0]
-    elif len(classe) == 0:
-        return randint(0, len(results) - 1)
-    else:
-        return classe[randint(0, len(classe) - 1)]
+    return np.argmax(np.array(results))
 
 
