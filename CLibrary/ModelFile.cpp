@@ -26,7 +26,7 @@ extern "C"{
         if(fichier){
 
             fichier << type << endl;
-            fichier << nbNeuronneFirstCouche + 1 << endl;
+            fichier << nbNeuronneFirstCouche << endl;
 
             for(int i = 0; i < nbCouche; i += 1){
                 fichier << neuronnePerCouche[i] << endl;
