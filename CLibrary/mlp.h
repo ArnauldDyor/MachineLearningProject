@@ -37,7 +37,7 @@ namespace seq {
 
 	};
 
-    SUPEREXPORT void compile(Sequential sequence, int sampleCount, int inputCountPerSample, int inputCountPerResult);
+    	SUPEREXPORT void compile(Sequential sequence, int sampleCount, int inputCountPerSample, int inputCountPerResult);
 	SUPEREXPORT void fit(Sequential sequence, int epochs, double alpha, int sampleCount, int inputCountPerSample, int inputCountPerResult);
 	SUPEREXPORT void propagate(Sequential sequence);
 	SUPEREXPORT void backPropagate(Sequential sequence, double* y);
