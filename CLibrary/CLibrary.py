@@ -86,8 +86,7 @@ def configureModelFile(parametre, modele):
     myDll.configureModelFile(parametre, modele)
 
 def configureModelFileMlp(nbNeuronneFirstCouche, neuronnePerCouche, nbCouche, nbNeuronneLastCouche, type):
-    os.chdir(PROJECT_PATH)
-    
+
     nbNeurPointer = (c_int32 * len(neuronnePerCouche))(*neuronnePerCouche)
 
     myDll.configureModelFileMlp.argtype = [c_int32, POINTER(ARRAY(c_int32, len(neuronnePerCouche))), c_int32, c_int32, c_char]
@@ -173,11 +172,6 @@ def useRosenblatt(X):
 
         if cursor == inputCountPerSample:
 
-            #if result < 0:
-               # result = -1
-            #else:
-             #   result = 1
-
             results.append(result)
             result = 0
             cursor = 0
@@ -186,7 +180,10 @@ def useRosenblatt(X):
 
     #choix binaire
     if len(results) == 1:
-        return results[0]
+        if results[0] < 0:
+            return -1
+        else:
+            return 1
     else:
         return np.argmax(np.array(results))
 
@@ -246,7 +243,8 @@ def useTrainModel(X):
         return 0
 
 def useMLP(X):
-
+    os.chdir(PROJECT_PATH)
+    
     X = toArray(X, 1, np.size(X))
 
     # on ajoute biais
