@@ -12,7 +12,8 @@
 #include "Eigen/Dense"
 #include "Matrix.h"
 #include "ModelFile.h"
-#include "Sequential.h"
+#include "mlp.h"
+
 
 using namespace Eigen;
 using namespace std;

@@ -6,7 +6,7 @@
 extern "C"{
 
 
-      // CONFIGURE Model.txt (pour classif et regresion)
+     // CONFIGURE Model.txt (pour classif et regresion)
      SUPEREXPORT void configureModelFile(int parametre, int modele){
 
       ofstream fichier("Model.txt", ios::out | ios::trunc);

@@ -132,15 +132,30 @@ extern "C"{
                                             double alpha
        )
        {
+        // création de la séquence
+        seq::Sequential sequence;
+        sequence.countCouche = nbCouche + 2;
+        sequence.type = type;
+        sequence.xtrain = XTrain;
+        sequence.ytrain = YTrain;
+        sequence.couches = new Couche[sequence.countCouche];
 
-        seq::Sequential sequential(type);
+        // créeation couche cachées
         for(int i = 0; i < nbCouche; i += 1){
 
-            sequential.addCouche(nbNeuronnePerCouche[i]);
+            Couche couche;
+            couche.indexCouche = i + 1;
+            couche.nbNeuronne = nbNeuronnePerCouche[i];
+            couche.neuronnes = new Neuronne[couche.nbNeuronne];
+
+            sequence.couches[i + 1] = couche;
         }
 
-        sequential.compile(XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult);
-        sequential.fit(epochs, alpha, sampleCount);
+        compile(sequence, sampleCount, inputCountPerSample, inputCountPerResult);
+        fit(sequence, epochs, alpha, sampleCount, inputCountPerSample, inputCountPerResult);
+        writeTrainModel(vectorToMatrix(getPoids(sequence)));
+        freeModele(sequence);
+
     }
 
     SUPEREXPORT void delete_linear_model(double* W)
@@ -170,9 +185,6 @@ extern "C"{
 
 
         }
-
-
-    int main(){}
 
 
 }
