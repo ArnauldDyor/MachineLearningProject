@@ -116,6 +116,7 @@ def perceptron_multicouche(type, XTrain, YTrain, sampleCount, inputCountPerSampl
     myDll.perceptron_multicouche(ord(type), XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample,
                                  inputCountPerResult, nbNeurPointer, len(nbNeuronnePerCouche), epochs, c_double(alpha))
 
+
 ### FONCTIONS PUR PYHTON
 
 # Transfor un np array en liste
@@ -182,29 +183,13 @@ def useRosenblatt(X):
 
         i += 1
 
-    return np.argmax(np.array(results))
-
-    # on renvoie la reponse
-
-    # cas simple
+    #choix binaire
     if len(results) == 1:
         return results[0]
-
-    # plusieurs classes
-    positifs = []
-    i = 0
-    while i < len(results):
-        if results[i] > 0:
-            positifs.append(i)
-
-        i += 1
-
-    if len(positifs) == 1:
-        return positifs[0]
-    elif len(positifs) > 0:
-        return positifs[randint(0, len(positifs) - 1)]
     else:
-        return randint(0, len(results) - 1)
+        return np.argmax(np.array(results))
+
+
 
 
 # utilise un modele de regression lineaire
