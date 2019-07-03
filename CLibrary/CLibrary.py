@@ -86,7 +86,8 @@ def configureModelFile(parametre, modele):
     myDll.configureModelFile(parametre, modele)
 
 def configureModelFileMlp(nbNeuronneFirstCouche, neuronnePerCouche, nbCouche, nbNeuronneLastCouche, type):
-
+    os.chdir(PROJECT_PATH)
+    
     nbNeurPointer = (c_int32 * len(neuronnePerCouche))(*neuronnePerCouche)
 
     myDll.configureModelFileMlp.argtype = [c_int32, POINTER(ARRAY(c_int32, len(neuronnePerCouche))), c_int32, c_int32, c_char]
