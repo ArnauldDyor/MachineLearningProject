@@ -99,7 +99,7 @@ class App extends Component {
           <select id="algorithm-select">
             <option value="Rosenblatt">Rosenblatt</option>
             <option value="Multilayer">Multilayer perceptron</option>
-            <option value="hamster">Hamster</option>
+            <option value="RBF">RBF</option>
           </select>
         </div>
         <div className="dz-container">

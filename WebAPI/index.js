@@ -32,7 +32,7 @@ const provision = async () => {
 
             pythonProcess.stderr.on('close', (code) => {
                 //console.log('END');
-                //resolve();
+                resolve();
             });
         })
     }
@@ -92,16 +92,18 @@ const provision = async () => {
                         });
 
                     file.on('error', function (err) {
-                        console.error(err)
+                        console.error(err);
                         return h.response(err).code(500);
                     });
 
                     data.file.pipe(transformer).pipe(file);
                 }
 
-                await execPromise();
+                let result = await execPromise();
 
-                if (Math.round(Math.random())) {
+                console.log(result);
+                
+                if (result.trim() === '-1') {
                     return h.response('frFlag').code(200);
                 }
                 else {

@@ -359,12 +359,13 @@ def image_to_array(image):
     return list_pixel
 
 def main():
-  print("Hello world !")
-  time.sleep( 1 )
+  #print("Hello world !")
+  #time.sleep( 1 )
   data = cv2.imread("../WebAPI/upload/img")
   image = image_to_array(data)
-  print(data)
+  #print(data)
   print(useTrainModel(np.array(image)))
   #../WebAPI/upload
   sys.stdout.flush()
 main()
+
