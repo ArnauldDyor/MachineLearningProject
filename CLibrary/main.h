@@ -13,6 +13,7 @@
 #include "Matrix.h"
 #include "ModelFile.h"
 #include "mlp.h"
+#include "rbfNaif.h"
 
 
 using namespace Eigen;
@@ -29,7 +30,8 @@ extern "C" {
     SUPEREXPORT void delete_linear_model(double* W);
     SUPEREXPORT void multiRosenblatt(double* W, double* XTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double* YTrain, double alpha, int epochs);
     SUPEREXPORT void perceptron_multicouche(char type, double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, int* nbNeuronnePerCouche, int nbCouche, int epochs, double alpha);
-
+    SUPEREXPORT void trainNaifRbf(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma);
+    SUPEREXPORT void multiRbfNaif(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma);
 }
 
 

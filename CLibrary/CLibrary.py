@@ -1,7 +1,6 @@
 from ctypes import *
 import numpy as np
 import os
-from random import randint
 
 # A MODOFIER
 myDll = CDLL("/home/victor/Programmation/C/Shared/main.so")
@@ -87,7 +86,7 @@ def configureModelFile(parametre, modele):
 
 def configureModelFileMlp(nbNeuronneFirstCouche, neuronnePerCouche, nbCouche, nbNeuronneLastCouche, type):
     os.chdir(PROJECT_PATH)
-    
+
     nbNeurPointer = (c_int32 * len(neuronnePerCouche))(*neuronnePerCouche)
 
     myDll.configureModelFileMlp.argtype = [c_int32, POINTER(ARRAY(c_int32, len(neuronnePerCouche))), c_int32, c_int32, c_char]
@@ -116,6 +115,31 @@ def perceptron_multicouche(type, XTrain, YTrain, sampleCount, inputCountPerSampl
 
     myDll.perceptron_multicouche(ord(type), XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample,
                                  inputCountPerResult, nbNeurPointer, len(nbNeuronnePerCouche), epochs, c_double(alpha))
+
+def trainNaifRbf(type, XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult, gamma):
+
+    configureModelFile(gamma, ord(type))
+
+    XTrainPointer = (c_double * len(XTrain))(*XTrain)
+    YTrainPointer = (c_double * len(YTrain))(*YTrain)
+
+    myDll.trainNaifRbf.argtype = [POINTER(ARRAY(c_double, len(XTrain))), POINTER(ARRAY(c_double, len(YTrain))), c_int32, c_int32, c_int32, c_double]
+    myDll.trainNaifRbf.restype = c_void_p
+
+    myDll.trainNaifRbf(XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult, c_double(gamma))
+
+def useNaifRbf(X, XTrain, sampleCount, inputCountPerSample, inputCountPerResult):
+
+    X = toArray(X, 1, inputCountPerSample)
+    XTrain = toArray(XTrain, sampleCount, inputCountPerSample)
+
+    XTrainPointer = (c_double * len(XTrain))(*XTrain)
+    XPointer = (c_double * len(X))(*X)
+
+    myDll.useNaifRbf.argtype = [POINTER(ARRAY(c_double, len(X))), POINTER(ARRAY(c_double, len(XTrain))), c_int32, c_int32, c_int32]
+    myDll.useNaifRbf.restype = c_double
+
+    return myDll.useNaifRbf(XPointer, XTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult)
 
 
 ### FONCTIONS PUR PYHTON
@@ -245,7 +269,7 @@ def useTrainModel(X):
 
 def useMLP(X):
     os.chdir(PROJECT_PATH)
-    
+
     X = toArray(X, 1, np.size(X))
 
     # on ajoute biais
@@ -321,5 +345,7 @@ def mlp_classif_get_classe(results):
     # si plusieurs classes
 
     return np.argmax(np.array(results))
+
+
 
 

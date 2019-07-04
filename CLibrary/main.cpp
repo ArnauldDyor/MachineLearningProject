@@ -162,6 +162,26 @@ extern "C"{
 	{
 		delete[] W;
 	}
+
+	SUPEREXPORT void trainNaifRbf(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma){
+
+        if(inputCountPerResult > 1){
+            multiRbfNaif(XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult, gamma);
+            return;
+        }
+
+        // on remplace les 0 par -1
+
+        for(int i = 0; i < sampleCount; i += 1){
+            if(YTrain[i] < 0.001 && YTrain[i] > -0.001){
+                YTrain[i] = -1.0;
+            }
+        }
+
+        MatrixXd weight = getWeight(getPhi(XTrain, sampleCount, inputCountPerSample, gamma), YTrain, sampleCount, inputCountPerResult);
+        writeTrainModel(weight);
+
+    }
 	// FONCTIONS INTERNES //
 
 
@@ -185,6 +205,15 @@ extern "C"{
 
 
         }
+
+    // rbf naif non biniare
+
+    SUPEREXPORT void multiRbfNaif(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma){
+        MatrixXd Y = translateTrainingData(YTrain, sampleCount, inputCountPerResult);
+        for(int i = 0; i < inputCountPerResult; i ++){
+            trainNaifRbf(XTrain, translateMatriceData(Y.col(i)), sampleCount, inputCountPerSample, 1, gamma);
+        }
+    }
 
 
 }
