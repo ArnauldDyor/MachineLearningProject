@@ -5,7 +5,7 @@ I) Créer la librairie partagée
 
 - Windows -> à compléter (avec codeblocks ou CLion ça doit pas être sorcier
 
-- Linux -> Editer MakeMLibrary, changer le path de destination
+- Linux -> Editer MakeMLibrary, changer le path de destination et d'eigen
 
 II) CLibrary : myDll -> Modifier le PATH du fichier CLibrary.py en insérant le chemin modififé précédemment (celui du MakeMLibrary)
                PROJECT_PATH -> chemin de votre actuel projet
