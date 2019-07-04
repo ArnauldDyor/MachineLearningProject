@@ -1,5 +1,4 @@
 # PATH EIGEN A CHANGER
-
 #!/bin/bash
 
 name_so="main.so"
@@ -29,10 +28,15 @@ echo "COMPLILATION =========>.........."
 echo "Compilation de mlp.cpp : "
 g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 mlp.cpp -o mlp.o
 
+echo "COMPLILATION ============>......."
+
+echo "Compilation de rbfNaif.cpp : "
+g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 rbfNaif.cpp -o rbfNaif.o
+
 echo "COMPLILATION ===================>"
 
 echo "Partge en $name_so : "
-g++ -shared -fPIC main.o ModelFile.o Matrix.o mlp.o  -o $name_so
+g++ -shared -fPIC main.o ModelFile.o Matrix.o mlp.o rbfNaif.o -o $name_so
 echo "OK"
 
 echo "Transfert dans $destination"
