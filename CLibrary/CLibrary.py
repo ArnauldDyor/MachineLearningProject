@@ -161,6 +161,7 @@ def toArray(X, sampleCount, inputCountPerSample):
 
 # utilie un modele de rosenblatt
 def useRosenblatt(X):
+    os.chdir(PROJECT_PATH)
     X = toArray(X, 1, np.size(X))
     # on ajoute biais
     X.append(1)
@@ -217,6 +218,7 @@ def useRosenblatt(X):
 
 # utilise un modele de regression lineaire
 def useRegLinear(X):
+    os.chdir(PROJECT_PATH)
     X = toArray(X, 1, np.size(X))
 
     # on ajoute biais
@@ -250,7 +252,6 @@ def useRegLinear(X):
 # utilse un modele
 def useTrainModel(X):
     os.chdir(PROJECT_PATH)
-
     # ouverture du fichier
     try:
         file = open("Model.txt", "r")
