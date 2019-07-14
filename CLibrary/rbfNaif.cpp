@@ -104,7 +104,7 @@ extern "C"{
             fichier.close();
         }
         else{
-            cout << "<<<<<  Erreur lors de la création du fichier Model  <<<<<" << endl;
+            cout << "<<<<<  Erreur lors de la lecture du fichier Model  <<<<<" << endl;
         }
 
         if(type == 'C')
