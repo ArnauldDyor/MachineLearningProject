@@ -129,7 +129,8 @@ def trainNaifRbf(type, XTrain, YTrain, sampleCount, inputCountPerSample, inputCo
     myDll.trainNaifRbf(XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult, c_double(gamma))
 
 def useNaifRbf(X, XTrain, sampleCount, inputCountPerSample, inputCountPerResult):
-
+    os.chdir(PROJECT_PATH)
+    
     X = toArray(X, 1, inputCountPerSample)
     XTrain = toArray(XTrain, sampleCount, inputCountPerSample)
 
