@@ -132,21 +132,56 @@ extern "C"{
                                             double alpha
        )
        {
+        // création de la séquence
+        seq::Sequential sequence;
+        sequence.countCouche = nbCouche + 2;
+        sequence.type = type;
+        sequence.xtrain = XTrain;
+        sequence.ytrain = YTrain;
+        sequence.couches = new Couche[sequence.countCouche];
 
-        seq::Sequential sequential(type);
+        // créeation couche cachées
         for(int i = 0; i < nbCouche; i += 1){
 
-            sequential.addCouche(nbNeuronnePerCouche[i]);
+            Couche couche;
+            couche.indexCouche = i + 1;
+            couche.nbNeuronne = nbNeuronnePerCouche[i];
+            couche.neuronnes = new Neuronne[couche.nbNeuronne];
+
+            sequence.couches[i + 1] = couche;
         }
 
-        sequential.compile(XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult);
-        sequential.fit(epochs, alpha, sampleCount);
+        compile(sequence, sampleCount, inputCountPerSample, inputCountPerResult);
+        fit(sequence, epochs, alpha, sampleCount, inputCountPerSample, inputCountPerResult);
+        writeTrainModel(vectorToMatrix(getPoids(sequence)));
+        freeModele(sequence);
+
     }
 
     SUPEREXPORT void delete_linear_model(double* W)
 	{
 		delete[] W;
 	}
+
+	SUPEREXPORT void trainNaifRbf(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma){
+
+        if(inputCountPerResult > 1){
+            multiRbfNaif(XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult, gamma);
+            return;
+        }
+
+        // on remplace les 0 par -1
+
+        for(int i = 0; i < sampleCount; i += 1){
+            if(YTrain[i] < 0.001 && YTrain[i] > -0.001){
+                YTrain[i] = -1.0;
+            }
+        }
+
+        MatrixXd weight = getWeight(getPhi(XTrain, sampleCount, inputCountPerSample, gamma), YTrain, sampleCount, inputCountPerResult);
+        writeTrainModel(weight);
+
+    }
 	// FONCTIONS INTERNES //
 
 
@@ -171,8 +206,14 @@ extern "C"{
 
         }
 
+    // rbf naif non biniare
 
-    int main(){}
+    SUPEREXPORT void multiRbfNaif(double* XTrain, double* YTrain, int sampleCount, int inputCountPerSample, int inputCountPerResult, double gamma){
+        MatrixXd Y = translateTrainingData(YTrain, sampleCount, inputCountPerResult);
+        for(int i = 0; i < inputCountPerResult; i ++){
+            trainNaifRbf(XTrain, translateMatriceData(Y.col(i)), sampleCount, inputCountPerSample, 1, gamma);
+        }
+    }
 
 
 }

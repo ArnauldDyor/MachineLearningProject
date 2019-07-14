@@ -3,8 +3,6 @@ import CLibrary as clib
 import numpy as np
 import os
 
-
-
 #traduit une cv2.image en array
 def image_to_array(image):
 
@@ -81,9 +79,3 @@ def use_model(image, XTrain):
         print("C'est la France !")
     else:
         print("C'est les USA !")
-
-
-
-
-
-

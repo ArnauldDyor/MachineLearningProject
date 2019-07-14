@@ -90,7 +90,7 @@ def configureModelFile(parametre, modele):
 
 def configureModelFileMlp(nbNeuronneFirstCouche, neuronnePerCouche, nbCouche, nbNeuronneLastCouche, type):
     os.chdir(PROJECT_PATH)
-    
+
     nbNeurPointer = (c_int32 * len(neuronnePerCouche))(*neuronnePerCouche)
 
     myDll.configureModelFileMlp.argtype = [c_int32, POINTER(ARRAY(c_int32, len(neuronnePerCouche))), c_int32, c_int32, c_char]
@@ -119,6 +119,32 @@ def perceptron_multicouche(type, XTrain, YTrain, sampleCount, inputCountPerSampl
 
     myDll.perceptron_multicouche(ord(type), XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample,
                                  inputCountPerResult, nbNeurPointer, len(nbNeuronnePerCouche), epochs, c_double(alpha))
+
+def trainNaifRbf(type, XTrain, YTrain, sampleCount, inputCountPerSample, inputCountPerResult, gamma):
+
+    configureModelFile(gamma, ord(type))
+
+    XTrainPointer = (c_double * len(XTrain))(*XTrain)
+    YTrainPointer = (c_double * len(YTrain))(*YTrain)
+
+    myDll.trainNaifRbf.argtype = [POINTER(ARRAY(c_double, len(XTrain))), POINTER(ARRAY(c_double, len(YTrain))), c_int32, c_int32, c_int32, c_double]
+    myDll.trainNaifRbf.restype = c_void_p
+
+    myDll.trainNaifRbf(XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult, c_double(gamma))
+
+def useNaifRbf(X, XTrain, sampleCount, inputCountPerSample, inputCountPerResult):
+
+    X = toArray(X, 1, inputCountPerSample)
+    XTrain = toArray(XTrain, sampleCount, inputCountPerSample)
+
+    XTrainPointer = (c_double * len(XTrain))(*XTrain)
+    XPointer = (c_double * len(X))(*X)
+
+    myDll.useNaifRbf.argtype = [POINTER(ARRAY(c_double, len(X))), POINTER(ARRAY(c_double, len(XTrain))), c_int32, c_int32, c_int32]
+    myDll.useNaifRbf.restype = c_double
+
+    return myDll.useNaifRbf(XPointer, XTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult)
+
 
 ### FONCTIONS PUR PYHTON
 
@@ -175,38 +201,22 @@ def useRosenblatt(X):
 
         if cursor == inputCountPerSample:
 
-            if result < 0:
-                result = -1
-            else:
-                result = 1
-
             results.append(result)
             result = 0
             cursor = 0
 
         i += 1
 
-    # on renvoie la reponse
-
-    # cas simple
+    #choix binaire
     if len(results) == 1:
-        return results[0]
-
-    # plusieurs classes
-    positifs = []
-    i = 0
-    while i < len(results):
-        if results[i] > 0:
-            positifs.append(i)
-
-        i += 1
-
-    if len(positifs) == 1:
-        return positifs[0]
-    elif len(positifs) > 0:
-        return positifs[randint(0, len(positifs) - 1)]
+        if results[0] < 0:
+            return -1
+        else:
+            return 1
     else:
-        return randint(0, len(results) - 1)
+        return np.argmax(np.array(results))
+
+
 
 
 # utilise un modele de regression lineaire
@@ -262,6 +272,7 @@ def useTrainModel(X):
         return 0
 
 def useMLP(X):
+    os.chdir(PROJECT_PATH)
 
     X = toArray(X, 1, np.size(X))
 
@@ -328,8 +339,6 @@ def useMLP(X):
 # retourne classe pour classif mlp à plusiseurs classes
 def mlp_classif_get_classe(results):
 
-    classe = []
-
     #si binaire
     if len(results) == 1:
         if results[0] < 0:
@@ -337,16 +346,11 @@ def mlp_classif_get_classe(results):
         else:
             return 1
 
-    for index in range(0, len(results)):
-        if results[index] > 0:
-            classe.append(index)
+    # si plusieurs classes
 
-    if len(classe) == 1:
-        return classe[0]
-    elif len(classe) == 0:
-        return randint(0, len(results) - 1)
-    else:
-        return classe[randint(0, len(classe) - 1)]
+    return np.argmax(np.array(results))
+
+
 
 def image_to_array(image):
 
@@ -359,13 +363,8 @@ def image_to_array(image):
     return list_pixel
 
 def main():
-  #print("Hello world !")
-  #time.sleep( 1 )
   data = cv2.imread("../WebAPI/upload/img")
   image = image_to_array(data)
-  #print(data)
   print(useTrainModel(np.array(image)))
-  #../WebAPI/upload
   sys.stdout.flush()
 main()
-
