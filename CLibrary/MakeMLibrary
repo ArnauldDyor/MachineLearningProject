@@ -25,18 +25,13 @@ g++ -c  -fPIC -I../eigen-eigen-323c052e1731 Matrix.cpp -o Matrix.o
 
 echo "COMPLILATION =========>.........."
 
-echo "Compilation de Neuronne.cpp : "
-g++ -c -fPIC -I../eigen-eigen-323c052e1731 Neuronne.cpp -o Neuronne.o
+echo "Compilation de mlp.cpp : "
+g++ -c  -fPIC -I../eigen-eigen-323c052e1731 mlp.cpp -o mlp.o
 
 echo "COMPLILATION ============>......."
 
-echo "Compilation de Couche.cpp : "
-g++ -c -fPIC -I../eigen-eigen-323c052e1731 Couche.cpp -o Couche.o
-
-echo "COMPLILATION ===============>...."
-
-echo "Compilation de Sequential.cpp : "
-g++ -c -fPIC -I../eigen-eigen-323c052e1731 Sequential.cpp -o Sequential.o
+echo "Compilation de rbfNaif.cpp : "
+g++ -c  -fPIC -I../eigen-eigen-323c052e1731 rbfNaif.cpp -o rbfNaif.o
 
 echo "COMPLILATION ===================>"
 
