@@ -102,8 +102,9 @@ const provision = async () => {
                 let result = await execPromise();
 
                 console.log(result);
+                console.log(result.trim());
                 
-                if (result.trim() === '-1') {
+                if (result.trim() < 0) {
                     return h.response('frFlag').code(200);
                 }
                 else {

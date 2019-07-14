@@ -47,4 +47,3 @@ echo "OK"
 echo "Transfert dans $destination"
 mv $name_so $destination
 echo "OK"
-

@@ -133,10 +133,10 @@ def trainNaifRbf(type, XTrain, YTrain, sampleCount, inputCountPerSample, inputCo
     myDll.trainNaifRbf(XTrainPointer, YTrainPointer, sampleCount, inputCountPerSample, inputCountPerResult, c_double(gamma))
 
 def useNaifRbf(X, XTrain, sampleCount, inputCountPerSample, inputCountPerResult):
-
+    
     X = toArray(X, 1, inputCountPerSample)
-    XTrain = toArray(XTrain, sampleCount, inputCountPerSample)
-
+    #XTrain = toArray(XTrain, sampleCount, inputCountPerSample)
+    
     XTrainPointer = (c_double * len(XTrain))(*XTrain)
     XPointer = (c_double * len(X))(*X)
 
@@ -171,7 +171,7 @@ def useRosenblatt(X):
 
     # ouverture du fichier
     try:
-        file = open("Model.txt", "r")
+        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -228,7 +228,7 @@ def useRegLinear(X):
 
     # ouverture du fichier
     try:
-        file = open("Model.txt", "r")
+        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -257,11 +257,11 @@ def useTrainModel(X):
 
     # ouverture du fichier
     try:
-        file = open("Model.txt", "r")
+        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
         contenu = file.readline(1)
         file.close()
     except Exception as e:
-        print("Impossible d'ouvrir Model.txt")
+        print("Impossible d'ouvrir Model.txt test")
         return
 
     if contenu == 'R':
@@ -281,7 +281,7 @@ def useMLP(X):
 
     # ouverture du fichier
     try:
-        file = open("Model.txt", "r")
+        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -334,7 +334,36 @@ def useMLP(X):
     if type == "R":
         return result
 
+# crééer XTrain et YTrain en fonctions d'une liste de répertoire
+def create_train_mat(list_path, picturePerRep):
+    XTrain = []
+    YTrain = []
+    classe = -1
 
+    if len(list_path) < 2:
+        print("Un entrainement nécessite au moins deux catégorie a analyser pour être pertinent")
+        return
+
+    for rep in list_path:
+
+        os.chdir(rep)
+        list_image = os.listdir('.')
+        i = 0
+        # nombre de photos analyser par répertoire
+        while i < picturePerRep:
+            try:
+                image = cv2.imread(list_image[i])
+                image = cv2.resize(image, (100, 100))
+                pixel = image_to_array(image)
+                XTrain += pixel
+                YTrain.append(classe)
+            except cv2.error:
+                print("L'image : ", list_image[i], " du répertoire : ", rep, " est inutilisable.")
+            i += 1
+
+        classe = 1
+
+    return XTrain, YTrain
 
 # retourne classe pour classif mlp à plusiseurs classes
 def mlp_classif_get_classe(results):
@@ -350,21 +379,29 @@ def mlp_classif_get_classe(results):
 
     return np.argmax(np.array(results))
 
-
-
 def image_to_array(image):
-
     list_pixel = []
     for i in range(0, np.size(image, axis= 0)):
         for j in range(0, np.size(image, axis=1)):
             for rgb in image[i, j]:
                 list_pixel.append(rgb)
-
     return list_pixel
 
 def main():
+  print(os.path.abspath(".."))
   data = cv2.imread("../WebAPI/upload/img")
-  image = image_to_array(data)
-  print(useTrainModel(np.array(image)))
+  image = cv2.resize(data, (100, 100))
+  image = image_to_array(image)
+  
+  #print(useMLP(np.array(image)))
+  
+  #print(useRosenblatt(np.array(image)))
+  
+  XTrain, YTrain = create_train_mat(["/home/sha/MachineLearningProject/TrainRBF/FR","/home/sha/MachineLearningProject/TrainRBF/USA"], 5)
+  sampleCount = int(len(YTrain))
+  inputCountPerSample = int(len(XTrain) / sampleCount)
+  print(useNaifRbf(np.array(image), XTrain, sampleCount, inputCountPerSample, 1))
+  
   sys.stdout.flush()
+
 main()
