@@ -1,2 +1,3 @@
 Pour entrainer notre modèle pour analyse d'images.
 Nécessite le fichier CLibrary.py
+Toutes les fonctions éxectuées pour tester nos modèles ne sont pas nécessairement dans ces fichiers
