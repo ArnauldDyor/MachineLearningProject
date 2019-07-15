@@ -1,0 +1,22 @@
+Requirements
+
+- Linux (created and tested on Linux)
+- Python3
+- Node.js (tested with v12.5.0) & npm (tested with v6.9.0)
+- g++ (if you need to re-compile C++ sources)
+- opencv-python (pip3 install opencv-python)
+
+Change paths in file CLibrary.py in CLibrary folder :
+
+	- PROJECT_PATH variable at line 11 
+	put your own path pointing to CLibrary folder :
+	Example : PROJECT_PATH = "/home/user/MachineLearningProject/CLibrary/"
+	
+	- List of path at line 398
+	Put your own pathto point to TrainRBF/USA and TrainRBF/FR
+	XTrain, YTrain = create_train_mat(["/home/user/MachineLearningProject/TrainRBF/FR", "/home/user/MachineLearningProject/TrainRBF/USA"], 5)
+
+Go into WebAPI folder :
+	- type "npm install" to install the dependencies of the server
+	- then type "node index.js"
+	- Server is now launched and ready, go to http://localhost:3000/app to use the app !
