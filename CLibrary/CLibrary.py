@@ -229,7 +229,7 @@ def useRegLinear(X):
 
     # ouverture du fichier
     try:
-        file = open("../Model.txt", "r")
+        file = open("/Model.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -394,8 +394,8 @@ def main():
   image = image_to_array(data)
 
   if (sys.argv[1] == 'RBF'):
-    os.chdir(PROJECT_PATH)
-    XTrain, YTrain = create_train_mat(["../TrainRBF/FR","../TrainRBF/USA"], 5)
+
+    XTrain, YTrain = create_train_mat(["/home/sha/Desktop/MachineLearningProject/TrainRBF/FR", "/home/sha/Desktop/MachineLearningProject/TrainRBF/USA"], 5)
     sampleCount = int(len(YTrain))
     inputCountPerSample = int(len(XTrain) / sampleCount)
     print(useNaifRbf(np.array(image), XTrain, sampleCount, inputCountPerSample, 1))
