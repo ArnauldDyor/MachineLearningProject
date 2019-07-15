@@ -16,10 +16,12 @@ const server = new Hapi.Server({
 
 const provision = async () => {
 
+    let functionModel = 'Rosenblatt';
+
     function execPromise() {
         return new Promise((resolve, reject) => {
             
-            const pythonProcess = spawn('python3',["../CLibrary/CLibrary.py"]);
+            const pythonProcess = spawn('python3',["../CLibrary/CLibrary.py", functionModel]);
 
             pythonProcess.stdout.on('data', (data) => {
                 //console.log(data.toString());
@@ -27,7 +29,7 @@ const provision = async () => {
             });
         
             pythonProcess.stderr.on('data', (data) => {
-                //console.log(`error:${data}`);
+                console.log(`error:${data}`);
             });
 
             pythonProcess.stderr.on('close', (code) => {
@@ -39,12 +41,6 @@ const provision = async () => {
 
     await server.register(Inert);
 
-    function sleep(ms) {
-        return new Promise(resolve => {
-            setTimeout(resolve, ms)
-        })
-    }
-
     server.route({
         method: 'GET',
         path: '/app/{path*}',
@@ -53,6 +49,23 @@ const provision = async () => {
                 path: './client/build/',
                 listing: false,
                 index: true
+            }
+        }
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/function',
+        config: {
+
+            cors: {
+                origin: ['*'],
+                additionalHeaders: ['cache-control', 'x-requested-with']
+            },
+
+            handler: async function (request, h) {
+                functionModel = request.payload.function;
+                return 'Changement worked';
             }
         }
     });
@@ -100,11 +113,9 @@ const provision = async () => {
                 }
 
                 let result = await execPromise();
-
                 console.log(result);
-                console.log(result.trim());
-                
-                if (result.trim() < 0) {
+
+                if (parseInt(result, 10) < 0) {
                     return h.response('frFlag').code(200);
                 }
                 else {

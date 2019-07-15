@@ -8,7 +8,7 @@ import cv2
 
 # A MODOFIER
 myDll = CDLL("../Shared/main.so")
-PROJECT_PATH = "/home/sha/MachineLearningProject/CLibrary/"
+PROJECT_PATH = "/home/sha/Desktop/MachineLearningProject/CLibrary/"
 
 
 def create_linear_model(sampleCount):
@@ -172,7 +172,7 @@ def useRosenblatt(X):
 
     # ouverture du fichier
     try:
-        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
+        file = open("../ModelROSENBLATT.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -229,7 +229,7 @@ def useRegLinear(X):
 
     # ouverture du fichier
     try:
-        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
+        file = open("/home/sha/Desktop/MachineLearningProject/Model.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -258,7 +258,7 @@ def useTrainModel(X):
 
     # ouverture du fichier
     try:
-        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
+        file = open("/home/sha/Desktop/MachineLearningProject/Model.txt", "r")
         contenu = file.readline(1)
         file.close()
     except Exception as e:
@@ -282,7 +282,7 @@ def useMLP(X):
 
     # ouverture du fichier
     try:
-        file = open("/home/sha/MachineLearningProject/Model.txt", "r")
+        file = open("/home/sha/Desktop/MachineLearningProject/ModelMLP.txt", "r")
         contenu = file.readlines()
         file.close()
     except Exception as e:
@@ -389,20 +389,23 @@ def image_to_array(image):
     return list_pixel
 
 def main():
-  print(os.path.abspath(".."))
+
   data = cv2.imread("../WebAPI/upload/img")
-  image = cv2.resize(data, (100, 100))
-  image = image_to_array(image)
+  image = image_to_array(data)
+
+  if (sys.argv[1] == 'RBF'):
+
+    XTrain, YTrain = create_train_mat(["/home/sha/Desktop/MachineLearningProject/TrainRBF/FR","/home/sha/Desktop/MachineLearningProject/TrainRBF/USA"], 5)
+    sampleCount = int(len(YTrain))
+    inputCountPerSample = int(len(XTrain) / sampleCount)
+    print(useNaifRbf(np.array(image), XTrain, sampleCount, inputCountPerSample, 1))
   
-  #print(useMLP(np.array(image)))
+  elif (sys.argv[1] == 'Multilayer Perceptron'):
+    print(useMLP(np.array(image)))
   
-  #print(useRosenblatt(np.array(image)))
-  
-  XTrain, YTrain = create_train_mat(["/home/sha/MachineLearningProject/TrainRBF/FR","/home/sha/MachineLearningProject/TrainRBF/USA"], 5)
-  sampleCount = int(len(YTrain))
-  inputCountPerSample = int(len(XTrain) / sampleCount)
-  print(useNaifRbf(np.array(image), XTrain, sampleCount, inputCountPerSample, 1))
-  
+  else:
+    print(useRosenblatt(np.array(image)))
+
   sys.stdout.flush()
 
 main()

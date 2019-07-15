@@ -4,7 +4,7 @@ import './App.css';
 import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
 import { Resultbox } from '../src/component/result_box';
-
+import { Select } from '../src/component/select';
 
 class App extends Component {
 
@@ -95,12 +95,8 @@ class App extends Component {
           <h2>Flag recognition</h2>
         </div>
         <div className="select-algo">
-          <label for="algorithm-select">Choose machine learning algorithm :</label>
-          <select id="algorithm-select">
-            <option value="Rosenblatt">Rosenblatt</option>
-            <option value="Multilayer">Multilayer perceptron</option>
-            <option value="RBF">RBF</option>
-          </select>
+          <label htmlFor="algorithm-select">Choose machine learning algorithm :</label>
+          <Select id="algorithm-select"/>
         </div>
         <div className="dz-container">
           <UploadPic />
