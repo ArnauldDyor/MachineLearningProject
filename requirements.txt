@@ -20,3 +20,7 @@ Go into WebAPI folder :
 	- type "npm install" to install the dependencies of the server
 	- then type "node index.js"
 	- Server is now launched and ready, go to http://localhost:3000/app to use the app !
+
+/!\ A noter : parfois le première requète pose problème, il faut alors 
+cliquer sur "Clear and upload a new image" et re-upload l'image tout
+fonctionnera comme il faut par la suite !
