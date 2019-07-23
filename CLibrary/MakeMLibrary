@@ -4,34 +4,34 @@
 name_so="main.so"
 
 # destination à changer
-destination="/home/victor/Programmation/C/Shared/"
+destination="../Shared/"
 
 echo "*** Compilation et partage MLLibrairy ***"
 
 echo "COMPLILATION ...................."
 
 echo "Compilation de main.cpp : "
-g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 main.cpp -o main.o
+g++ -c -fPIC -I../eigen-eigen-323c052e1731 main.cpp -o main.o
 
 echo "COMPILATION ===>................"
 
 echo "Compilation de ModelFle.cpp : "
-g++ -c -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 ModelFile.cpp -o ModelFile.o
+g++ -c -fPIC -I../eigen-eigen-323c052e1731 ModelFile.cpp -o ModelFile.o
 
 echo "COMPLILATION ======>............."
 
 echo "Compilation de Matrix.cpp : "
-g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 Matrix.cpp -o Matrix.o
+g++ -c  -fPIC -I../eigen-eigen-323c052e1731 Matrix.cpp -o Matrix.o
 
 echo "COMPLILATION =========>.........."
 
 echo "Compilation de mlp.cpp : "
-g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 mlp.cpp -o mlp.o
+g++ -c  -fPIC -I../eigen-eigen-323c052e1731 mlp.cpp -o mlp.o
 
 echo "COMPLILATION ============>......."
 
 echo "Compilation de rbfNaif.cpp : "
-g++ -c  -fPIC -I/home/victor/Programmation/C/eigen-eigen-323c052e1731 rbfNaif.cpp -o rbfNaif.o
+g++ -c  -fPIC -I../eigen-eigen-323c052e1731 rbfNaif.cpp -o rbfNaif.o
 
 echo "COMPLILATION ===================>"
 
@@ -42,4 +42,3 @@ echo "OK"
 echo "Transfert dans $destination"
 mv $name_so $destination
 echo "OK"
-

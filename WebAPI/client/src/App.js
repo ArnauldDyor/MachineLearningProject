@@ -4,7 +4,7 @@ import './App.css';
 import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
 import { Resultbox } from '../src/component/result_box';
-
+import { Select } from '../src/component/select';
 
 class App extends Component {
 
@@ -75,7 +75,7 @@ class App extends Component {
             loop = 0;
             return;
           }
-          else if(response.status !== 200){
+          else if (response.status !== 200) {
             window.myComponent.changeFlag('unknownFlag');
             clearInterval(intervalTimer);
             loop = 0;
@@ -93,6 +93,10 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Annual project machine learning</h2>
           <h2>Flag recognition</h2>
+        </div>
+        <div className="select-algo">
+          <label htmlFor="algorithm-select">Choose machine learning algorithm :</label>
+          <Select id="algorithm-select"/>
         </div>
         <div className="dz-container">
           <UploadPic />

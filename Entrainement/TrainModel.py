@@ -4,11 +4,11 @@ import numpy as np
 import os
 
 # à changer : Chemin du dossier où se situe l'executable
-PROJECT_PATH = "/home/victor/Programmation/python/FlagAnalyse/"
+PROJECT_PATH = "../."
 # à changer : Crééer 2 dossiers pour l'entrainement et y placer les 50 dernières images de chaques pays du Dataset
 # Il est important que REP_TEST[0] = France et [1] = USA
-REP_TEST = ["/home/victor/esgi/L3/Projet2019/MachineLearningProject/Train/FR/",
-            "/home/victor/esgi/L3/Projet2019/MachineLearningProject/Train/US/"]
+REP_TEST = ["../Train/FR/",
+            "../Train/US/"]
 
 
 # traduit une cv2.image en array

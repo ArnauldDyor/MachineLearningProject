@@ -28,3 +28,12 @@
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.select-algo {
+  margin-bottom: 48px;
+  margin-top: 48px;
+}
+
+select {
+  margin-top: 10px;
+}
